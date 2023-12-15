@@ -8,35 +8,72 @@ option go_package = "LiveView/proto/grps";
 service LiveViewReturn{
   //агент youtuba
   rpc ServiceYouTube(RequestGetData) returns (ResponseStreamData);
+}
+
+service Telegram{
   //агент telegram
-  rpc Servicetelegram(RequestData) returns (ResponseData);
+  rpc GetData(RequestData) returns (ResponseData);
+}
+
+service Reddit{
+    //агент reddit
+    rpc RedditGetData(RequestDataReddit) returns (ResponseDataReddit);
 }
 
 // youtuba
 message RequestGetData{
   int32 idUser = 1;
-  repeated string url = 2;
+  repeated Arrayurl url = 2;
 }
 
 message ResponseStreamData{
   int32 idUser = 1;
-  repeated string urlvideo =2;
-}
-// telegram
-message IMG{
-  int32 id_img = 1;
-  string url_img =2;
+  repeated Arrayurl urlvideo =2;
 }
 
-message RequestData{
-  int32 id_user = 1;
+message Arrayurl{
+  string name = 1;
+  string url = 2;
 }
+
+
+// telegram
+message RequestData{
+    int32 id_user = 1;
+    repeated string name_channel = 2;
+}
+
 
 message ResponseData{
   int32 id_data = 1;
-  string name_channel = 2;
-  string text_post = 3;
-  repeated IMG imgs = 4;
+  repeated ArrayPost post = 2;
+}
+
+
+message ArrayPost{
+  string Channel_Name = 1;
+  string Text = 2;
+  repeated IMGS img = 3;
+}
+
+message IMGS{
+    string url_img = 2;
+}
+
+//reddit
+message RequestDataReddit{
+  int32 id_user = 1;
+  repeated string link = 2;
+}
+
+message ResponseDataReddit{
+  repeated ArrayPostReddit post = 1;
+}
+
+message ArrayPostReddit{
+  string link = 1;
+  string Text = 2;
+  repeated IMGS img = 3;
 }
 
 //protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/grps.proto
@@ -56,7 +93,7 @@ go install google.golang.org/protobuf/cmd/protoc-gen-go
 go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
 
-*/
+ */
 
 
 

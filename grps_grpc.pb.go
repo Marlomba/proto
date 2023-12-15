@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.22.2
-// source: proto/grps.proto
+// source: grps.proto
 
 package grps
 
@@ -19,8 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	LiveViewReturn_ServiceYouTube_FullMethodName  = "/LiveView.LiveViewReturn/ServiceYouTube"
-	LiveViewReturn_Servicetelegram_FullMethodName = "/LiveView.LiveViewReturn/Servicetelegram"
+	LiveViewReturn_ServiceYouTube_FullMethodName = "/LiveView.LiveViewReturn/ServiceYouTube"
 )
 
 // LiveViewReturnClient is the client API for LiveViewReturn service.
@@ -29,8 +28,6 @@ const (
 type LiveViewReturnClient interface {
 	// агент youtuba
 	ServiceYouTube(ctx context.Context, in *RequestGetData, opts ...grpc.CallOption) (*ResponseStreamData, error)
-	// агент telegram
-	Servicetelegram(ctx context.Context, in *RequestData, opts ...grpc.CallOption) (*ResponseData, error)
 }
 
 type liveViewReturnClient struct {
@@ -50,23 +47,12 @@ func (c *liveViewReturnClient) ServiceYouTube(ctx context.Context, in *RequestGe
 	return out, nil
 }
 
-func (c *liveViewReturnClient) Servicetelegram(ctx context.Context, in *RequestData, opts ...grpc.CallOption) (*ResponseData, error) {
-	out := new(ResponseData)
-	err := c.cc.Invoke(ctx, LiveViewReturn_Servicetelegram_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // LiveViewReturnServer is the server API for LiveViewReturn service.
 // All implementations must embed UnimplementedLiveViewReturnServer
 // for forward compatibility
 type LiveViewReturnServer interface {
 	// агент youtuba
 	ServiceYouTube(context.Context, *RequestGetData) (*ResponseStreamData, error)
-	// агент telegram
-	Servicetelegram(context.Context, *RequestData) (*ResponseData, error)
 	mustEmbedUnimplementedLiveViewReturnServer()
 }
 
@@ -76,9 +62,6 @@ type UnimplementedLiveViewReturnServer struct {
 
 func (UnimplementedLiveViewReturnServer) ServiceYouTube(context.Context, *RequestGetData) (*ResponseStreamData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ServiceYouTube not implemented")
-}
-func (UnimplementedLiveViewReturnServer) Servicetelegram(context.Context, *RequestData) (*ResponseData, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Servicetelegram not implemented")
 }
 func (UnimplementedLiveViewReturnServer) mustEmbedUnimplementedLiveViewReturnServer() {}
 
@@ -111,24 +94,6 @@ func _LiveViewReturn_ServiceYouTube_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _LiveViewReturn_Servicetelegram_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RequestData)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LiveViewReturnServer).Servicetelegram(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: LiveViewReturn_Servicetelegram_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LiveViewReturnServer).Servicetelegram(ctx, req.(*RequestData))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // LiveViewReturn_ServiceDesc is the grpc.ServiceDesc for LiveViewReturn service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -140,11 +105,191 @@ var LiveViewReturn_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "ServiceYouTube",
 			Handler:    _LiveViewReturn_ServiceYouTube_Handler,
 		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "grps.proto",
+}
+
+const (
+	Telegram_GetData_FullMethodName = "/LiveView.Telegram/GetData"
+)
+
+// TelegramClient is the client API for Telegram service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type TelegramClient interface {
+	// агент telegram
+	GetData(ctx context.Context, in *RequestData, opts ...grpc.CallOption) (*ResponseData, error)
+}
+
+type telegramClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewTelegramClient(cc grpc.ClientConnInterface) TelegramClient {
+	return &telegramClient{cc}
+}
+
+func (c *telegramClient) GetData(ctx context.Context, in *RequestData, opts ...grpc.CallOption) (*ResponseData, error) {
+	out := new(ResponseData)
+	err := c.cc.Invoke(ctx, Telegram_GetData_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// TelegramServer is the server API for Telegram service.
+// All implementations must embed UnimplementedTelegramServer
+// for forward compatibility
+type TelegramServer interface {
+	// агент telegram
+	GetData(context.Context, *RequestData) (*ResponseData, error)
+	mustEmbedUnimplementedTelegramServer()
+}
+
+// UnimplementedTelegramServer must be embedded to have forward compatible implementations.
+type UnimplementedTelegramServer struct {
+}
+
+func (UnimplementedTelegramServer) GetData(context.Context, *RequestData) (*ResponseData, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetData not implemented")
+}
+func (UnimplementedTelegramServer) mustEmbedUnimplementedTelegramServer() {}
+
+// UnsafeTelegramServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to TelegramServer will
+// result in compilation errors.
+type UnsafeTelegramServer interface {
+	mustEmbedUnimplementedTelegramServer()
+}
+
+func RegisterTelegramServer(s grpc.ServiceRegistrar, srv TelegramServer) {
+	s.RegisterService(&Telegram_ServiceDesc, srv)
+}
+
+func _Telegram_GetData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestData)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TelegramServer).GetData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Telegram_GetData_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TelegramServer).GetData(ctx, req.(*RequestData))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// Telegram_ServiceDesc is the grpc.ServiceDesc for Telegram service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var Telegram_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "LiveView.Telegram",
+	HandlerType: (*TelegramServer)(nil),
+	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Servicetelegram",
-			Handler:    _LiveViewReturn_Servicetelegram_Handler,
+			MethodName: "GetData",
+			Handler:    _Telegram_GetData_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/grps.proto",
+	Metadata: "grps.proto",
+}
+
+const (
+	Reddit_RedditGetData_FullMethodName = "/LiveView.Reddit/RedditGetData"
+)
+
+// RedditClient is the client API for Reddit service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type RedditClient interface {
+	// агент reddit
+	RedditGetData(ctx context.Context, in *RequestDataReddit, opts ...grpc.CallOption) (*ResponseDataReddit, error)
+}
+
+type redditClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewRedditClient(cc grpc.ClientConnInterface) RedditClient {
+	return &redditClient{cc}
+}
+
+func (c *redditClient) RedditGetData(ctx context.Context, in *RequestDataReddit, opts ...grpc.CallOption) (*ResponseDataReddit, error) {
+	out := new(ResponseDataReddit)
+	err := c.cc.Invoke(ctx, Reddit_RedditGetData_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RedditServer is the server API for Reddit service.
+// All implementations must embed UnimplementedRedditServer
+// for forward compatibility
+type RedditServer interface {
+	// агент reddit
+	RedditGetData(context.Context, *RequestDataReddit) (*ResponseDataReddit, error)
+	mustEmbedUnimplementedRedditServer()
+}
+
+// UnimplementedRedditServer must be embedded to have forward compatible implementations.
+type UnimplementedRedditServer struct {
+}
+
+func (UnimplementedRedditServer) RedditGetData(context.Context, *RequestDataReddit) (*ResponseDataReddit, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RedditGetData not implemented")
+}
+func (UnimplementedRedditServer) mustEmbedUnimplementedRedditServer() {}
+
+// UnsafeRedditServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RedditServer will
+// result in compilation errors.
+type UnsafeRedditServer interface {
+	mustEmbedUnimplementedRedditServer()
+}
+
+func RegisterRedditServer(s grpc.ServiceRegistrar, srv RedditServer) {
+	s.RegisterService(&Reddit_ServiceDesc, srv)
+}
+
+func _Reddit_RedditGetData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestDataReddit)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RedditServer).RedditGetData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Reddit_RedditGetData_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RedditServer).RedditGetData(ctx, req.(*RequestDataReddit))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// Reddit_ServiceDesc is the grpc.ServiceDesc for Reddit service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var Reddit_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "LiveView.Reddit",
+	HandlerType: (*RedditServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "RedditGetData",
+			Handler:    _Reddit_RedditGetData_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "grps.proto",
 }
