@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.22.2
-// source: grps.proto
+// source: proto/grps.proto
 
 package grps
 
@@ -107,7 +107,7 @@ var LiveViewReturn_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "grps.proto",
+	Metadata: "proto/grps.proto",
 }
 
 const (
@@ -199,7 +199,7 @@ var Telegram_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "grps.proto",
+	Metadata: "proto/grps.proto",
 }
 
 const (
@@ -291,5 +291,5 @@ var Reddit_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "grps.proto",
+	Metadata: "proto/grps.proto",
 }
