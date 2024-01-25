@@ -46,7 +46,6 @@ message RequestData{
 }
 
 
-
 message ResponseData{
   int32 id_data = 1;
   repeated ArrayPost post = 2;
@@ -58,7 +57,7 @@ message ArrayPost{
   string Text = 2;
   repeated IMGS img = 3;
   string CreatedAt = 4;
-  string ScaningAt =5;
+  string GetAt = 5;
 }
 
 message IMGS{
@@ -80,19 +79,22 @@ message ArrayPostReddit{
   string link = 1;
   string Text = 2;
   repeated IMGS img = 3;
+  string CreatedAt = 4;
+  string GetAt = 5;
 }
 
 
 
-//команда для генерации кода
+
 //protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/grps.proto
 
-//команда для запуска клиента для теста 
+
 // .\evans proto/generate/sum.proto -p 8080
 
 
+//protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/generate/sum.proto
 
-/* зависимости для работы с gRPC
+/*
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
 go get -u google.golang.org/protobuf/cmd/protoc-gen-go
@@ -102,7 +104,6 @@ go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
 
 */
-
 
 
 
