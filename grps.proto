@@ -82,4 +82,5 @@ message ArrayPostReddit{
   repeated IMGS img = 3;
   string CreatedAt = 4;
   string GetAt = 5;
+  string LogoLink = 6;
 }
